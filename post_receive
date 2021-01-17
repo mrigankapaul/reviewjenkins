@@ -1,0 +1,18 @@
+#!/bin/bash
+
+if ! [ -t 0 ]; then
+        read -a ref
+fi
+
+
+IFS='/' read -ra REF <<< "${ref[2]}"
+branch="${REF[2]}"
+
+if [ $branch == "master" ]; then
+        curl -I -u remote:1234 http://jenkins:8080/job/mavenob/build?token=secret
+        if [ $? -eq 0 ]; then
+                echo "*** Ok"
+        else
+                echo "*** Error"
+        fi
+fi
